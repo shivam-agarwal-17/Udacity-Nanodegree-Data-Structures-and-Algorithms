@@ -1,17 +1,17 @@
 def  _search_pivot_helper(arr, start, end):
+    """Search for the pivot, returns -1, if no pivot found i.e. array is already sorted. Pivot defined as the element 
+    at the boundary. For example, in case of arr = [4,5,6,7,0,1,2], pivot will be 3 (i.e. index for element 7)"""
+    
     if end < start:
         return -1
-    
-    if end == start:
-        return start
     
     mid = (start + end) // 2
     
     if mid < end and arr[mid] > arr[mid+1]: # 'mid < end' check is to ensure that mid+1 index exists
-        return mid+1
+        return mid
     
     if mid > start and arr[mid] < arr[mid-1]:
-        return mid
+        return mid-1
         
     if arr[mid] < arr[end]: # part from mid to end is sorted, that means pivot sould be in part between start to mid-1
         return _search_pivot_helper(arr, start, mid-1)
@@ -58,7 +58,7 @@ def rotated_array_search(input_list, number):
        int: Index or -1
     """
     
-    pivot = search_pivot(input_list)
+    pivot = search_pivot(input_list)+1 # see definition of pivot under _search_pivot_helper() definition
     return _rotated_array_search_helper(input_list, number, pivot, len(input_list)-1+pivot)
 
 def linear_search(input_list, number):
