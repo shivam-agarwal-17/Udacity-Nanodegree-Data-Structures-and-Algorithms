@@ -45,14 +45,17 @@ class DoublyLinkedList:
     def remove(self, node):
         """ 
         Remove a node from the list 
-
         Args:
             node(class:Node): node to be removed from the list
         """
         if self.head is None: # list is empty
             return 
         
-        if node == self.head:
+        if node == self.head == self.tail:
+            self.head = None
+            self.tail = self.head
+            
+        elif node == self.head:
             self.head = self.head.next
             self.head.prev = None
             
@@ -63,7 +66,6 @@ class DoublyLinkedList:
         else:
             node.prev.next = node.next
             node.next.prev = node.prev
-            
             
     def __iter__(self):
         current = self.head
