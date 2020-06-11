@@ -1,19 +1,19 @@
 def _sqrt_helper(number, lower, upper):
-    if lower == upper:
+    if upper - lower <= 1:
         if number < upper*upper:
-            return upper - 1
+            return lower
         else:
             return upper
-        
+
     mid = (lower + upper)//2
     mid_sqr = mid * mid
-    
+
     if mid_sqr == number:
         return mid
     elif mid_sqr < number:
-        return _sqrt_helper(number, mid+1, upper)
+        return _sqrt_helper(number, mid, upper)
     else:
-        return _sqrt_helper(number, lower, mid-1)
+        return _sqrt_helper(number, lower, mid)
 
 def sqrt(number):
     """
