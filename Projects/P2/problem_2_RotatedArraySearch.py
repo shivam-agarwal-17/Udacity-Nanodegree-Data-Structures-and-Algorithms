@@ -1,23 +1,31 @@
 def  _search_pivot_helper(arr, start, end):
-    """Search for the pivot, returns -1, if no pivot found i.e. array is already sorted. Pivot defined as the element 
-    at the boundary. For example, in case of arr = [4,5,6,7,0,1,2], pivot will be 3 (i.e. index for element 7)"""
+    """Search for the pivot, returns -1, if no pivot found i.e. array is already sorted. Pivot defined as the index of smalled element. For example, in case of arr = [4,5,6,7,0,1,2], pivot will be 4 (i.e. index for element 0). """
     
-    if end < start:
+    if end < start: # empty array
         return -1
-    
-    mid = (start + end) // 2
-    
-    if mid < end and arr[mid] > arr[mid+1]: # 'mid < end' check is to ensure that mid+1 index exists
-        return mid
-    
-    if mid > start and arr[mid] < arr[mid-1]:
-        return mid-1
-        
-    if arr[mid] < arr[end]: # part from mid to end is sorted, that means pivot sould be in part between start to mid-1
-        return _search_pivot_helper(arr, start, mid-1)
 
-    else: # pivot sould be in part between mid+1 to end
-        return _search_pivot_helper(arr, mid+1, end)
+    mid = (start+end)//2
+
+    # check if mid is just left to pivot element
+    if mid < len(arr)-1 and arr[mid] > arr[mid+1]:
+        return mid+1
+
+    # check if mid is the pivot element
+    if mid > 0 and arr[mid] < arr[mid-1]:
+        return mid
+
+    # this is the tricky case: basically, if our search had narrowed down to 
+    # single element, and we still didn't return in previous two conditions, then
+    # it implies array didn't have a rotation to begin with and first element was pivot
+    # first because array had been sorted ascendingly
+    if start == end:
+        return mid
+
+    if arr[mid] < arr[end]:
+        return _search_pivot_helper(arr, start, mid)
+
+    return _search_pivot_helper(arr, mid, end)
+    
 
 def search_pivot(arr):
     return _search_pivot_helper(arr, 0, len(arr)-1)
@@ -58,7 +66,7 @@ def rotated_array_search(input_list, number):
        int: Index or -1
     """
     
-    pivot = search_pivot(input_list)+1 # see definition of pivot under _search_pivot_helper() definition
+    pivot = search_pivot(input_list) # see definition of pivot under _search_pivot_helper() definition
     return _rotated_array_search_helper(input_list, number, pivot, len(input_list)-1+pivot)
 
 def linear_search(input_list, number):
